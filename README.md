@@ -15,7 +15,7 @@ Image gallery example with React and Local Storage.
 
 **Setup**
 - Clone the repo  
-`git clone https://github.com/ShahnawazAli93/react-image-gallery.git`
+`git clone https://github.com/shahnawaz/react-image-gallery.git`
 - Run installation  
 `npm install`
 - You are ready to roll.. :) Start the project by running   
