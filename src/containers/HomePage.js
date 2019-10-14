@@ -45,15 +45,6 @@ class HomePage extends React.Component {
       },
       showError: false
     };
-    this.onImageAddClick = this.onImageAddClick.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onPicturesSelected = this.onPicturesSelected.bind(this);
-    this.onUploadComplete = this.onUploadComplete.bind(this);
-    this.onPictureDelete = this.onPictureDelete.bind(this);
-    this.onPictureClick = this.onPictureClick.bind(this);
-    this.toggleLightBox = this.toggleLightBox.bind(this);
-    this.paginationOffsetChange = this.paginationOffsetChange.bind(this);
-    this.updateCurrentPhotos = this.updateCurrentPhotos.bind(this);
   }
 
   componentWillMount(){
@@ -64,24 +55,24 @@ class HomePage extends React.Component {
     this.updateCurrentPhotos(nextProps.photos, this.state.pagination.offset);
   }
 
-  onImageAddClick(){
+  onImageAddClick = () => {
     document.getElementById('filePicker').click();
   }
 
-  onChange(e){
+  onChangeImage = (e) => {
     if(e.target.files && e.target.files.length>0)
       this.onPicturesSelected(e.target.files);
   }
 
-  onPicturesSelected(fileList){
+  onPicturesSelected = (fileList) => {
     let showError = false;
-    fileList = [...fileList].filter((file)=>{
-      file.id = (new Date()).getTime().toString()+file.lastModified.toString();
+    fileList = [...fileList].filter((file) => {
+      file.id = (new Date()).getTime().toString() + file.lastModified.toString();
       file.createdAt = (new Date()).getTime();
-      if(!(file.size >= 5000000)){
+      if (!(file.size >= 5000000)) {
         return file;
       }
-      else{
+      else {
         showError = true;
       }
     });
@@ -91,9 +82,9 @@ class HomePage extends React.Component {
     });
   }
 
-  onUploadComplete(fileId) {
-    let toUpload = [...this.state.toUpload].filter(function(file){
-      if(file.id !== fileId){
+  onUploadComplete = (fileId) => {
+    let toUpload = [...this.state.toUpload].filter(function (file) {
+      if (file.id !== fileId) {
         return file;
       }
     });
@@ -102,31 +93,31 @@ class HomePage extends React.Component {
     });
   }
 
-  onPictureDelete(photoId){
+  onPictureDelete = (photoId) => {
     this.props.actions.deletePhotos(photoId);
   }
 
-  toggleLightBox(){
+  toggleLightBox = () => {
     this.setState({
       isLightBoxOpen: !this.state.isLightBoxOpen
     });
   }
 
-  onPictureClick(photoIndex){
+  onPictureClick = (photoIndex) => {
     this.toggleLightBox();
     this.setState({
-      clickedPictureIndex: this.state.pagination.offset+photoIndex
+      clickedPictureIndex: this.state.pagination.offset + photoIndex
     });
   }
 
-  paginationOffsetChange(offset) {
+  paginationOffsetChange = (offset) => {
     this.setState({
       pagination: Object.assign({}, this.state.pagination, {offset: offset})
     });
     this.updateCurrentPhotos(this.props.photos, offset);
   }
 
-  updateCurrentPhotos(photos, offset){
+  updateCurrentPhotos = (photos, offset) => {
     let currentPhotos;
     currentPhotos = photos.filter((photo, index)=>{
       if(index >= offset && index < offset+this.state.pagination.limit){
@@ -145,7 +136,7 @@ class HomePage extends React.Component {
         <Header onRightClick={this.onImageAddClick}/>
         {/* Input to accept images - invisible */}
         <input type="file" name="file" id="filePicker" ref="filePicker" accept="image/png, image/jpeg"
-               style={{height: 0, width: 0, visibility: 'hidden'}} multiple={true} onChange={this.onChange}/>
+               style={{height: 0, width: 0, visibility: 'hidden'}} multiple={true} onChange={this.onChangeImage}/>
         {
           this.state.showError?
             <h4 style={{textAlign: 'center', fontFamily: 'Roboto', color: '#e57373'}}>
